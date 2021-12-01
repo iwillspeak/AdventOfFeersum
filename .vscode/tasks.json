@@ -19,7 +19,18 @@
             "presentation": {
                 "reveal": "silent"
             },
-            "problemMatcher": "$msCompile"
+            "problemMatcher": {
+              "pattern": {
+                  "regexp": "^(.*):(\\d+):(\\d+)(,(\\d+):(\\d+))?:\\s+(warning|error):\\s+(.*)$",
+                  "file": 1,
+                  "line": 2,
+                  "column": 3,
+                  "endLine": 5,
+                  "endColumn": 6,
+                  "severity": 7,
+                  "message": 8
+              }
+          }
         }
     ]
 }
