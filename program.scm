@@ -4,5 +4,5 @@
         (prefix (advent day2) day2/)
         )
 
-;;(day1/main)
-(day2/main)
+(day1/main)
+; (day2/main)
