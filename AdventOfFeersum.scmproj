@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <Compile Include="data.sld" />
+    <Compile Include="day1.sld" />
+    <Compile Include="day2.sld" />
     <Compile Include="program.scm" />
   </ItemGroup>
   
