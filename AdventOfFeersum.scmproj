@@ -1,4 +1,4 @@
-<Project Sdk="Feersum.Sdk/0.2.4">
+<Project Sdk="Feersum.Sdk/0.2.5">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -7,9 +7,11 @@
 
   <ItemGroup>
     <Compile Include="data.sld" />
+    <Compile Include="utils.sld" />
     <Compile Include="day1.sld" />
     <Compile Include="day2.sld" />
     <Compile Include="day3.sld" />
+    <Compile Include="day4.sld" />
     <Compile Include="program.scm" />
   </ItemGroup>
   
