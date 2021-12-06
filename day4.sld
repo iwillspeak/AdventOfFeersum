@@ -1,6 +1,7 @@
 (define-library (advent day4)
   (import (scheme base)
     (scheme write)
+    (scheme cxr)
     (feersum builtin macros)
     (advent data)
     (advent utils))
@@ -63,6 +64,15 @@
         (check-col board 3)
         (check-col board 4)))
 
+    ;;; Check if Any Board has Won
+    (define (check-boards boards)
+      (if (pair? boards)
+        (if (check-board (car boards))
+          (car boards)
+          (check-boards (cdr boards)))
+        '()))
+
+
     ;;; Print out a board
     (define (display-board board)
       (define (display-one board i j)
@@ -91,9 +101,52 @@
           (make-boards (cdr boards)))
         '()))
 
+    ;;; Update any boards that contain this number
+    (define (update-boards boards number)
+      (define (update-board board number)
+        (define (update-board-iter board number row col)
+          (when (< row 5)
+            (if (= number (board-get-num board row col))
+              (board-set-mark! board row col)
+              (if (< col 4)
+                (update-board-iter board number row (+ 1 col))
+                (update-board-iter board number (+ 1 row) 0)))))
+        (update-board-iter board number 0 0))
+      (when (pair? boards)
+        (update-board (car boards) number)
+        (update-boards (cdr boards) number)))
+
+    ;;; Run the Game
+    (define (find-winning-board boards numbers)
+      (when (pair? numbers)
+        (update-boards boards (car numbers))
+        (let ((winner (check-boards boards)))
+          (if (null? winner)
+            (find-winning-board boards (cdr numbers))
+            (cons (car numbers) winner)))))
+
+    ;; Score for a board
+    (define (score-winner winner)
+      (define (score-board-iter board row col)
+        (if (> row 4)
+          0
+          (+ (if (board-get-mark board row col) 0 (board-get-num board row col))
+            (if (< col 4)
+              (score-board-iter board row (+ 1 col))
+              (score-board-iter board (+ 1 row) 0)))))
+      (* (car winner) (score-board-iter (cdr winner) 0 0)))
+
+    ;;; Run the game to completion
+    (define (run-game name data)
+      (define boards (make-boards (cdr data)))
+      (define winner (find-winning-board boards (car data)))
+      (display name)(display ": \n")(display-board (cdr winner))(newline)
+      (display (car winner))(newline)
+      (display "Score: ")(display (score-winner winner))(newline))
+
     ;;; Main entry point
     (define (main)
-      (define boards (make-boards (cdr day4-test)))
-      (display "test: \n")(map1 display-board boards)(newline)
+      (run-game "test" day4-test)
+      (run-game "real" day4-real)
       )
 ))
